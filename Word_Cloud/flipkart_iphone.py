@@ -42,3 +42,31 @@ wordcloud_iphone=WordCloud(background_color='white',stopwords=sp,width=1800,heig
 plt.imshow(wordcloud_iphone,interpolation='bilinear')
 plt.axis('off')
 plt.show()
+
+
+
+###########bigram word cloud##########
+import nltk
+feedback=open(r'C:\Users\ppallapotu\DS_Project\Word_Cloud\iphone_review.txt','r',encoding='utf-8').read()
+feedback=re.sub(r'[^A-Za-z ]+','',feedback).lower()
+sp=stopwords.words('English')
+sp.extend(['day','iphone','android','the','a'])
+corpus=nltk.word_tokenize(feedback)
+corpus=[i for i in corpus if i not in sp]
+bigram_corpus=list(nltk.bigrams(corpus))
+dictonary=[' '.join(tup) for tup in bigram_corpus]
+from sklearn.feature_extraction.text import CountVectorizer
+cv=CountVectorizer(ngram_range=(2,2))
+bag_of_words=cv.fit_transform(dictonary)
+cv.vocabulary_
+sum_words=bag_of_words.sum(axis=0)
+word_freq=[(word,sum_words[0,idx]) for word,idx in cv.vocabulary_.items()]
+word_freq=sorted(word_freq,key=lambda x:x[1],reverse=True)
+word_dict=dict(word_freq)
+wordcloud_iphone_bigram=WordCloud(max_words=200,background_color='white',stopwords=sp,width=1800,height=1400).generate_from_frequencies(word_dict)
+plt.imshow(wordcloud_iphone_bigram,interpolation='bilinear')
+plt.axis('off')
+plt.show()
+
+
+
