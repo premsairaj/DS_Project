@@ -1,0 +1,38 @@
+Step1:
+       We have to Create a Dataset in 'Json' format
+       refer:https://simpletransformers.ai/docs/qa-data-formats/
+
+       in the Json File We have dictionaries of Keys
+       context: The paragraph or text from which the question is asked.
+       qas: A list of questions and answers (format below).
+       
+       Questions and answers are represented as dictionaries. Each dictionary in 'qas' has the following format.
+
+       id: (string) A unique ID for the question. Should be unique across the entire dataset.
+       question: (string) A question.
+       is_impossible: (bool) Indicates whether the question can be answered correctly from the context.
+       answers: (list) The list of correct answers to the question.
+       A single answer is represented by a dictionary with the following attributes.
+
+       text: (string) The answer to the question. Must be a substring of the context.
+       answer_start: (int) Starting index of the answer in the context
+
+Step2:
+      Divide the Dataset into Train and evaluate ,test
+Step3:!pip install simpletransformers #if we want to do the quick training and evalution then we use simpletransformers
+Step4:import logging
+      from simpletransformers.question_answering import QuestionAnsweringModel, QuestionAnsweringArgs
+
+      QuestionAnsweringModel--->it is the model it required 3 things  i)model_type ii)model_name iii)model_args
+      QuestionAnsweringArgs---->it is used to set configuration of the model like(epochs,batch_size...)
+      
+     Ex:model_type='bert'
+        model_name='bert-base-cased'
+Step5:Create a Model
+      model = QuestionAnsweringModel(model_type,model_name, args=model_args)
+
+      for training the model use 'model.train_model(train,eval_data=test)'
+      for evaluting the model use 'result, texts = model.eval_model(test)'
+
+        
+      
